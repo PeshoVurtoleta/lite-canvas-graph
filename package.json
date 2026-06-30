@@ -1,0 +1,67 @@
+{
+  "name": "@zakkster/lite-canvas-graph",
+  "version": "1.0.1",
+  "description": "Zero-GC canvas renderer for time-series telemetry. Decimates to per-column min/max envelope when sample count exceeds pixel width.",
+  "type": "module",
+  "main": "./CanvasGraph.js",
+  "module": "./CanvasGraph.js",
+  "types": "./CanvasGraph.d.ts",
+  "exports": {
+    ".": {
+      "types": "./CanvasGraph.d.ts",
+      "node": "./CanvasGraph.js",
+      "import": "./CanvasGraph.js",
+      "default": "./CanvasGraph.js"
+    }
+  },
+  "files": [
+    "CanvasGraph.js",
+    "CanvasGraph.d.ts",
+    "README.md",
+    "llms.txt",
+    "LICENSE.txt"
+  ],
+  "scripts": {
+    "test": "vitest run"
+  },
+  "keywords": [
+    "canvas",
+    "graph",
+    "chart",
+    "telemetry",
+    "time-series",
+    "oscilloscope",
+    "waveform",
+    "zero-gc",
+    "lite",
+    "no-allocation",
+    "performance",
+    "offscreen-canvas"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "@zakkster/lite-ring-buffer": "^1.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0",
+    "@zakkster/lite-ring-buffer": "^1.0.0"
+  },
+  "license": "MIT",
+  "author": "Zahary Shinikchiev <shinikchiev@yahoo.com>",
+  "homepage": "https://github.com/PeshoVurtoleta/lite-canvas-graph#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PeshoVurtoleta/lite-canvas-graph.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PeshoVurtoleta/lite-canvas-graph/issues",
+    "email": "shinikchiev@yahoo.com"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/PeshoVurtoleta"
+  },
+  "sideEffects": false
+}

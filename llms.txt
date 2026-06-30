@@ -1,0 +1,51 @@
+# @zakkster/lite-canvas-graph
+
+> Zero-GC canvas renderer for time-series telemetry. Decimates to per-column min/max envelope when sample count exceeds pixel width.
+
+## Summary
+
+`@zakkster/lite-canvas-graph` draws a live trace from a `RingBuffer` to a `<canvas>` (or `OffscreenCanvas` in a Worker) without per-frame allocation. One `Float32Array` scratch grows once to the ring's capacity; one `Float32Array(width * 2)` holds per-column min/max for decimation. After warmup, every render is a fixed-size numeric loop and a sequence of direct canvas calls.
+
+Time flows left → right: the oldest sample renders at `x = 0`, the newest at `x = width - 1`. Out-of-range samples are clamped. NaN samples break the polyline in direct mode and are skipped in decimated mode (their columns stay empty).
+
+## Core API
+
+```ts
+new CanvasGraph(canvas, width, height, options?)
+  options: { dpr?, background?='#111', stroke?='#00ffcc', lineWidth?=1 }
+
+graph.render(ringBuffer, maxValue, options?)
+  options: { decimate?=true, minValue?=0 }
+
+graph.resize(width, height)
+graph.labelBitmapHook = (ctx, maxValue, width, height) => void
+graph.destroy()
+```
+
+`render` is the only hot-path method. Allocation-free in the steady state.
+
+## Concepts
+
+- **Direct vs decimated.** When `ringBuffer.count <= width`, renders a polyline (`moveTo` + `lineTo` per sample). When `ringBuffer.count > width` and `decimate !== false`, renders a per-column min/max envelope — one vertical line per pixel column. Convention from oscilloscope and audio-waveform displays; preserves spike visibility that naive subsampling would lose.
+- **Scratchpads grow once.** Sample scratch sized to `ringBuffer.capacity`, pixel scratch to `width * 2`. Both re-grow only on capacity / width increase. Resize triggers a one-time backing-store reconfig on next render.
+- **DPR detection.** Reads `globalThis.devicePixelRatio` (or `options.dpr` override — required in Workers). Detected per render; reconfigures backing store + transform when DPR shifts.
+- **`alpha: false` context.** Opaque, faster on most GPUs. `background` is always visible.
+
+## Constraints
+
+- Single trace per instance. Use multiple instances for multi-trace charts (one canvas per trace stacked in CSS is the cheapest pattern).
+- Linear scale only. Pre-transform samples (e.g. `Math.log10`) for log axes.
+- Float32 internal storage. 7 significant digits of precision.
+- Renders the *current* ring contents only — no scrollback.
+- Methods are NOT safe to call after `destroy()`.
+
+## Performance
+
+- Per-frame allocations: **0** (after warmup).
+- Per-frame canvas calls in direct mode: 1 `fillRect` + 1 `beginPath` + n `moveTo/lineTo` + 1 `stroke`.
+- Per-frame canvas calls in decimated mode: 1 `fillRect` + 1 `beginPath` + 2 × occupied-column-count + 1 `stroke`.
+- DPR handling reconfigures the backing store at most once per actual DPR change.
+
+## License
+
+MIT © Zahary Shinikchiev
