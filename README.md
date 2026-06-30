@@ -1,6 +1,7 @@
 # @zakkster/lite-canvas-graph
 
 [![npm version](https://img.shields.io/npm/v/@zakkster/lite-canvas-graph.svg?style=for-the-badge&color=latest)](https://www.npmjs.com/package/@zakkster/lite-canvas-graph)
+[![sponsor](https://img.shields.io/badge/sponsor-PeshoVurtoleta-ea4aaa.svg?logo=github)](https://github.com/sponsors/PeshoVurtoleta)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/@zakkster/lite-canvas-graph?style=for-the-badge)](https://bundlephobia.com/result?p=@zakkster/lite-canvas-graph)
 [![npm downloads](https://img.shields.io/npm/dm/@zakkster/lite-canvas-graph?style=for-the-badge&color=blue)](https://www.npmjs.com/package/@zakkster/lite-canvas-graph)
 [![npm total downloads](https://img.shields.io/npm/dt/@zakkster/lite-canvas-graph?style=for-the-badge&color=blue)](https://www.npmjs.com/package/@zakkster/lite-canvas-graph)
